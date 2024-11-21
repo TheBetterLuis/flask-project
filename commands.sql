@@ -75,7 +75,7 @@ join genres g on b.genre_id = g.id
 join reviews r on b.id = r.book_id
 join users u on r.user_id = u.id;
 
-*/
+
 
 select 
     b.id as 'Book ID',
@@ -90,6 +90,15 @@ join authors a on b.author_id = a.id
 join genres g on b.genre_id = g.id
 join reviews r on b.id = r.book_id
 join users u on r.user_id = u.id;
+
+
+SELECT * FROM books WHERE id = 1;
+SELECT * FROM authors WHERE id = 1;
+SELECT * FROM genres  WHERE id = 1;
+SELECT * FROM editorials WHERE id = 1;
+SELECT * FROM reviews WHERE id = 1;
+SELECT * FROM users WHERE id = 1;
+*/
 
 
 
