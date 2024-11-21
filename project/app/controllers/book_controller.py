@@ -1,5 +1,22 @@
 from app import mysql
 
+#GET
+def get_all():
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute("SELECT b.id as 'Book ID',b.title as 'Book Name',a.name as 'Author Name',g.name as 'Genre',r.content as 'Review Text',u.name as 'Review User'FROM books b join authors a on b.author_id = a.id join genres g on b.genre_id = g.id join reviews r on b.id = r.book_id join users u on r.user_id = u.id")
+        columns = [column[0] for column in cursor.description]
+        books = [dict(zip(columns,row)) for row in cursor.fetchall()]
+        cursor.close()
+        return books
+    except Exception as e:
+        print(f"Error fetching data: {str(e)}")
+        return {"error":"Failed to fetching data"}
+
+
+
+
+
 def get_books():
     try:
         cursor=mysql.connection.cursor()
@@ -44,6 +61,7 @@ def get_book_query(id):
     else:
         return {"message":"Must send ID"}
 
+#POST
 def create_book(data):
     title = data.get('title')
     published_date = data.get('published_date')
