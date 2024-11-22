@@ -12,6 +12,23 @@ def get_editorials():
         print(f"Error fetching editorials: {str(e)}")
         return {"error":"Failed to fetch editorials"}
 
+def get_editorial(id):
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('SELECT * FROM editorials WHERE id = %s',(id,))
+        columns = [column[0] for column in cursor.description]
+        response = dict(zip(columns,cursor.fetchone()))
+        print(response)
+        cursor.close()
+
+        if response:
+            return response
+        else:
+            return {"message":"Can't find editorial"}
+    except Exception as e:
+        print(f"Error fetching editorial: {str(e)}")
+        return {"message":"Error fetching editorial"}       
+
 
 #POST
 def create_editorial(data):
@@ -29,3 +46,31 @@ def create_editorial(data):
         print(f"Error creating editorial: {str(e)}")
         return {"message":"Error creating editorial"}
 
+
+#Patch
+def update_editorial(id,data):
+    name = data.get('name')
+
+    if not name:
+        return {"message":"Must include new editorial name"}
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('UPDATE editorials SET name = %s WHERE id =%s', (name, id))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"editorial updated successfully."}
+    except Exception as e:
+        print(f"Error updating editorial: {str(e)}")
+        return {"message":"Error updating editorial"}
+
+#delete
+def delete_editorial(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM editorials WHERE id = %s', (id,))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"Editorial deleted successfully."}
+    except Exception as e:
+        print(f"Error deleting editorial: {str(e)}")
+        return {"message":"Error deleting editorial"}
