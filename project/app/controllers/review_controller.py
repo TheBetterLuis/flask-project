@@ -58,7 +58,6 @@ def update_review(id,data):
     cursor = mysql.connection.cursor()
     update_query = "UPDATE reviews SET "
     update_data = []
-#insert into reviews (content,book_id,user_id) values ("I love Harry Potter!",3,1);
     for field, value in data.items():
         if field in ['content','book_id','user_id']:
             update_query += f"{field} = %s, "
