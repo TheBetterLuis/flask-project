@@ -13,10 +13,6 @@ def get_all():
         print(f"Error fetching data: {str(e)}")
         return {"error":"Failed to fetching data"}
 
-
-
-
-
 def get_books():
     try:
         cursor=mysql.connection.cursor()
@@ -28,7 +24,6 @@ def get_books():
     except Exception as e:
         print(f"Error fetching books: {str(e)}")
         return {"error":"Failed to fetch books"}
-
 
 def get_book(id):
     try:
@@ -73,26 +68,11 @@ def create_book(data):
         return {"message":"All fields are mandatory"}
     try: 
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT into books (title,published_date,author_id,genre_id,editorial_id) VALUES (%s, %s, %s, %s, %s)')
+        cursor.execute('INSERT INTO books (title, published_date, author_id, genre_id, editorial_id) VALUES (%s, %s, %s, %s, %s)', (title,published_date, author_id,genre_id,editorial_id))
         mysql.connection.commit()
         cursor.close()
         return {"message":"Book created successfully."}
     except Exception as e:
         print(f"Error creating book: {str(e)}")
         return {"message":"Error creating book"}
-
-def create_author(data):
-    author_name= data.get('name')
-
-    if not author_name:
-        return {"message":"must include author's name"}
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.execute('INSERT into authors (name) VALUES (%s)')
-        mysql.connection.commit()
-        cursor.close()
-        return {"message":"author created successfully."}
-    except Exception as e:
-        print(f"Error creating author: {str(e)}")
-        return {"message":"Error creating author"}
 
