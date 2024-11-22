@@ -1,6 +1,6 @@
 from flask import Blueprint,jsonify,request
 
-from app.controllers.review_controller import get_reviews,create_review,update_review,delete_review
+from app.controllers.review_controller import get_reviews,create_review,update_review,delete_review,get_review
 
 review = Blueprint('review',__name__)
 
@@ -8,6 +8,10 @@ review = Blueprint('review',__name__)
 @review.route('/reviews',methods=['GET'])
 def get_all_reviews():
     return jsonify(get_reviews())
+
+@review.route('/reviews/<review_id>',methods=['GET'])
+def get_one_review(review_id):
+    return jsonify(get_review(review_id))
 
 #post
 @review.route('/reviews',methods=['POST'])

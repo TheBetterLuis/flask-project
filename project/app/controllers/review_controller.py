@@ -13,6 +13,25 @@ def get_reviews():
         return {"error":"Failed to fetch reviews"}
 
 
+def get_review(id):
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('SELECT * FROM reviews WHERE id = %s',(id,))
+        columns = [column[0] for column in cursor.description]
+        response = dict(zip(columns,cursor.fetchone()))
+        print(response)
+        cursor.close()
+
+        if response:
+            return response
+        else:
+            return {"message":"Can't find review"}
+    except Exception as e:
+        print(f"Error fetching review: {str(e)}")
+        return {"message":"Error fetching review"}       
+
+
+
 #POST
 def create_review(data):
     content = data.get('content')
