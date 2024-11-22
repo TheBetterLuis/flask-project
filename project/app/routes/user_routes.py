@@ -1,6 +1,6 @@
 from flask import Blueprint,jsonify,request
 
-from app.controllers.user_controller import get_users,create_user,update_user,delete_user
+from app.controllers.user_controller import get_users,create_user,update_user,delete_user,get_user
 
 user = Blueprint('user',__name__)
 
@@ -8,6 +8,11 @@ user = Blueprint('user',__name__)
 @user.route('/users',methods=['GET'])
 def get_all_users():
     return jsonify(get_users())
+
+
+@user.route('/users/<user_id>',methods=['GET'])
+def get_one_user(user_id):
+    return jsonify(get_user(user_id))
 
 #post
 @user.route('/users',methods=['POST'])

@@ -13,6 +13,25 @@ def get_users():
         return {"error":"Failed to fetch users"}
 
 
+def get_user(id):
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = %s',(id,))
+        columns = [column[0] for column in cursor.description]
+        response = dict(zip(columns,cursor.fetchone()))
+        print(response)
+        cursor.close()
+
+        if response:
+            return response
+        else:
+            return {"message":"Can't find user"}
+    except Exception as e:
+        print(f"Error fetching user: {str(e)}")
+        return {"message":"Error fetching user"}       
+
+
+
 #POST
 def create_user(data):
     name = data.get('name')

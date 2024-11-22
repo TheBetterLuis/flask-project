@@ -13,6 +13,24 @@ def get_authors():
         return {"error":"Failed to fetch authors"}
 
 
+def get_author(id):
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('SELECT * FROM authors WHERE id = %s',(id,))
+        columns = [column[0] for column in cursor.description]
+        response = dict(zip(columns,cursor.fetchone()))
+        print(response)
+        cursor.close()
+
+        if response:
+            return response
+        else:
+            return {"message":"Can't find author"}
+    except Exception as e:
+        print(f"Error fetching author: {str(e)}")
+        return {"message":"Error fetching author"}       
+
+
 def create_author(data):
     author_name= data.get('name')
 
