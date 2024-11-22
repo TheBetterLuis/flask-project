@@ -1,6 +1,6 @@
 from flask import Blueprint,jsonify,request
 
-from app.controllers.author_controller import get_authors,create_author
+from app.controllers.author_controller import get_authors,create_author,update_author,delete_author
 
 author = Blueprint('author',__name__)
 
@@ -13,3 +13,15 @@ def get_all_authors():
 @author.route('/authors',methods=['POST'])
 def add_author():
     return jsonify(create_author(request.json))
+
+#patch
+@author.route('/authors/<author_id>',methods=['PATCH'])
+def patch_author(author_id):
+    return jsonify(update_author(author_id, request.json))
+
+
+#delete
+@author.route('/authors/<author_id>',methods=['DELETE'])
+def erase_author(author_id):
+    return jsonify(delete_author(author_id))
+

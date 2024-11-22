@@ -27,3 +27,33 @@ def create_author(data):
     except Exception as e:
         print(f"Error creating author: {str(e)}")
         return {"message":"Error creating author"}
+
+#Patch
+def update_author(id,data):
+    name = data.get('name')
+
+    if not name:
+        return {"message":"Must include new author name"}
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('UPDATE authors SET name = %s WHERE id =%s', (name, id))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"author updated successfully."}
+    except Exception as e:
+        print(f"Error updating author: {str(e)}")
+        return {"message":"Error updating author"}
+
+#delete
+def delete_author(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM authors WHERE id = %s', (id,))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"author deleted successfully."}
+    except Exception as e:
+        print(f"Error deleting author: {str(e)}")
+        return {"message":"Error deleting author"}
+
+

@@ -28,3 +28,34 @@ def create_user(data):
     except Exception as e:
         print(f"Error creating user: {str(e)}")
         return {"message":"Error creating user"}
+
+#Patch
+def update_user(id,data):
+    name = data.get('name')
+
+    if not name:
+        return {"message":"Must include new name"}
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('UPDATE users SET name = %s WHERE id =%s', (name, id))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"user updated successfully."}
+    except Exception as e:
+        print(f"Error updating user: {str(e)}")
+        return {"message":"Error updating user"}
+
+#delete
+def delete_user(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM users WHERE id = %s', (id,))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"user deleted successfully."}
+    except Exception as e:
+        print(f"Error deleting user: {str(e)}")
+        return {"message":"Error deleting user"}
+
+
+
