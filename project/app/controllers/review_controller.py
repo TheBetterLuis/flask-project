@@ -31,3 +31,42 @@ def create_review(data):
         print(f"Error creating genre: {str(e)}")
         return {"message":"Error creating review"}
 
+#Patch
+def update_review(id,data):
+    if not data:
+        return {"message":"Must send new data"}
+
+    cursor = mysql.connection.cursor()
+    update_query = "UPDATE reviews SET "
+    update_data = []
+#insert into reviews (content,book_id,user_id) values ("I love Harry Potter!",3,1);
+    for field, value in data.items():
+        if field in ['content','book_id','user_id']:
+            update_query += f"{field} = %s, "
+            update_data.append(value)
+    if not update_data:
+        return {"message":"Must send data"}
+    update_query = update_query.rstrip(", ") 
+    update_query += " WHERE id = %s"
+    update_data.append(id)
+
+    try:
+        cursor.execute(update_query, tuple(update_data,))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"review updated successfully."}
+    except Exception as e:
+        print(f"Error updating review: {str(e)}")
+        return {"message":"Error updating review"}
+
+#delete
+def delete_review(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM reviews WHERE id = %s', (id,))
+        mysql.connection.commit()
+        cursor.close()
+        return {"message":"Review deleted successfully."}
+    except Exception as e:
+        print(f"Error deleting review: {str(e)}")
+        return {"message":"Error deleting review"}
